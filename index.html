@@ -287,7 +287,7 @@
             resize: vertical;
         }
         
-        /* الشريط الإخباري */
+        /* الشريط الإخباري - تم التعديل هنا */
         .news-bar {
             background-color: var(--dark-yellow);
             color: var(--dark-blue);
@@ -307,13 +307,13 @@
         .news-item {
             display: inline-block;
             padding-right: 40px;
-            animation: news-scroll 30s linear infinite;
+            animation: news-scroll 60s linear infinite; /* تم تغيير السرعة إلى 60 ثانية */
             font-weight: 500;
         }
         
         @keyframes news-scroll {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+            0% { transform: translateX(100%); } /* من اليمين */
+            100% { transform: translateX(-100%); } /* إلى اليسار */
         }
         
         /* التذييل */
@@ -377,6 +377,11 @@
             .hero p {
                 font-size: 1rem;
             }
+            
+            /* تعديلات للشريط الإخباري على الجوال */
+            .news-item {
+                animation: news-scroll 40s linear infinite; /* أبطأ على الجوال */
+            }
         }
 
         /* إشعارات */
@@ -401,7 +406,7 @@
     </style>
 </head>
 <body>
-    <!-- الشريط الإخباري المتحرك -->
+    <!-- الشريط الإخباري المتحرك - تم التعديل هنا -->
     <div class="news-bar">
         <div class="container">
             <div class="news-content">
@@ -422,6 +427,7 @@
                     <li><a href="#services">خدماتنا</a></li>
                     <li><a href="#clients">عملاؤنا</a></li>
                     <li><a href="#contact">اتصل بنا</a></li>
+                    <!-- تم إصلاح رابط لوحة التحكم هنا -->
                     <li><a href="login.html" class="btn">لوحة التحكم</a></li>
                 </ul>
             </nav>
