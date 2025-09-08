@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - Createur Web Site</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #0a1930;
+            --dark-yellow: #ffc107;
+            --light-blue: #1e3a5f;
+            --light-yellow: #ffd54f;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --success: #28a745;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: var(--dark-blue);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* الشريط الجانبي */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--light-blue) 100%);
+            color: var(--white);
+            padding: 20px 0;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-header h2 {
+            color: var(--dark-yellow);
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+        
+        .sidebar-menu li {
+            padding: 0;
+            margin: 5px 0;
+        }
+        
+        .sidebar-menu a {
+            color: var(--white);
+            text-decoration: none;
+            display: block;
+            padding: 12px 20px;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left-color: var(--dark-yellow);
+            color: var(--dark-yellow);
+        }
+        
+        .sidebar-menu i {
+            margin-left: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* الشريط العلوي */
+        .top-bar {
+            background-color: var(--white);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-box input {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-left: 10px;
+            width: 250px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+        
+        /* محتوى لوحة التحكم */
+        .dashboard-content {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .page-title {
+            margin-bottom: 20px;
+            color: var(--dark-blue);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--dark-yellow);
+            display: inline-block;
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-left: 15px;
+            flex-shrink: 0;
+        }
+        
+        .stat-icon.blue {
+            background-color: rgba(10, 25, 48, 0.1);
+            color: var(--dark-blue);
+        }
+        
+        .stat-icon.yellow {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--dark-yellow);
+        }
+        
+        .stat-icon.green {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+        
+        .stat-info h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .stat-info p {
+            color: #666;
+        }
+        
+        .content-box {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .content-box h3 {
+            margin-bottom: 15px;
+            color: var(--dark-blue);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        /* الجداول */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table th {
+            background-color: #f8f9fa;
+            color: var(--dark-blue);
+            font-weight: 600;
+        }
+        
+        table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        .status.read {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status.unread {
+            background-color: #ffecb3;
+            color: #f57f17;
+        }
+        
+        /* الأزرار */
+        .btn {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--dark-blue);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--light-blue);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: var(--white);
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: var(--white);
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+            width: auto;
+        }
+        
+        /* النماذج */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        /* رفع الملفات */
+        .file-upload {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--dark-blue);
+        }
+        
+        .file-upload i {
+            font-size: 36px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        /* التبويبات */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--dark-yellow);
+            color: var(--dark-blue);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* الصور المصغرة */
+        .thumbnails {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .thumbnail {
+            position: relative;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        
+        .thumbnail-actions {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+        }
+        
+        /* responsive design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar-header h2, .sidebar-menu span {
+                display: none;
+            }
+            
+            .sidebar-menu a {
+                text-align: center;
+                padding: 15px 10px;
+            }
+            
+            .sidebar-menu i {
+                margin: 0;
+                font-size: 18px;
+            }
+            
+            .search-box input {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الشريط الجانبي -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Createur</h2>
+            <p>لوحة التحكم</p>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> <span>لوحة التحكم</span></a></li>
+            <li><a href="#"><i class="fas fa-image"></i> <span>إدارة الصور</span></a></li>
+            <li><a href="#"><i class="fas fa-ad"></i> <span>الإعلانات</span></a></li>
+            <li><a href="#"><i class="fas fa-envelope"></i> <span>الرسائل</span></a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> <span>الإعدادات</span></a></li>
+            <li><a href="index.html"><i class="fas fa-home"></i> <span>الموقع الرئيسي</span></a></li>
+            <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>تسجيل الخروج</span></a></li>
+        </ul>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <!-- الشريط العلوي -->
+        <div class="top-bar">
+            <div class="search-box">
+                <input type="text" placeholder="بحث...">
+                <i class="fas fa-search"></i>
+            </div>
+            
+            <div class="user-info">
+                <div>
+                    <h4>مدير النظام</h4>
+                    <p>admin@createur.com</p>
+                </div>
+                <img src="https://via.placeholder.com/40" alt="صورة المستخدم">
+            </div>
+        </div>
+
+        <!-- محتوى لوحة التحكم -->
+        <div class="dashboard-content">
+            <h1 class="page-title">لوحة تحكم الموقع</h1>
+            
+            <!-- إحصائيات سريعة -->
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>24</h3>
+                        <p>عدد الصور</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon yellow">
+                        <i class="fas fa-ad"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>8</h3>
+                        <p>إعلان نشط</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>15</h3>
+                        <p>رسالة جديدة</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- إدارة المحتوى -->
+            <div class="content-box">
+                <h3>إضافة محتوى جديد</h3>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="images">صورة جديدة</div>
+                    <div class="tab" data-tab="ads">إعلان جديد</div>
+                </div>
+                
+                <div class="tab-content active" id="images">
+                    <div class="file-upload" id="imageUpload">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>انقر أو اسحب الصورة هنا للرفع</p>
+                        <input type="file" style="display: none;" id="imageInput">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>عنوان الصورة</label>
+                        <input type="text" class="form-control" placeholder="أدخل عنوان الصورة">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>وصف الصورة</label>
+                        <textarea class="form-control" placeholder="أدخل وصف الصورة"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn btn-primary">رفع الصورة</button>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="ads">
+                    <div class="form-group">
+                        <label>عنوان الإعلان</label>
+                        <input type="text" class="form-control" placeholder="أدخل عنوان الإعلان">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>محتوى الإعلان</label>
+                        <textarea class="form-control" placeholder="أدخل محتوى الإعلان"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>صورة الإعلان</label>
+                        <input type="file" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>تاريخ النشر</label>
+                        <input type="date" class="form-control">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn btn-primary">نشر الإعلان</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- الرسائل الواردة -->
+            <div class="content-box">
+                <h3>الرسائل الواردة</h3>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>المرسل</th>
+                            <th>البريد الإلكتروني</th>
+                            <th>الموضوع</th>
+                            <th>التاريخ</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="messagesTable">
+                        <tr>
+                            <td>أحمد محمد</td>
+                            <td>ahmed@example.com</td>
+                            <td>استفسار عن خدمات تصميم المواقع</td>
+                            <td>2023-10-15</td>
+                            <td><span class="status unread">غير مقروء</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm">عرض</button>
+                                <button class="btn btn-danger btn-sm">حذف</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>شركة التقنية</td>
+                            <td>tech@example.com</td>
+                            <td>طلب تصميم متجر إلكتروني</td>
+                            <td>2023-10-14</td>
+                            <td><span class="status read">تم القراءة</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm">عرض</button>
+                                <button class="btn btn-danger btn-sm">حذف</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>سارة عبد الله</td>
+                            <td>sara@example.com</td>
+                            <td>استفسار عن الأسعار</td>
+                            <td>2023-10-13</td>
+                            <td><span class="status read">تم القراءة</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm">عرض</button>
+                                <button class="btn btn-danger btn-sm">حذف</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- معرض الصور -->
+            <div class="content-box">
+                <h3>معرض الصور</h3>
+                
+                <div class="thumbnails">
+                    <div class="thumbnail">
+                        <img src="https://via.placeholder.com/150" alt="صورة">
+                        <div class="thumbnail-actions">
+                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="thumbnail">
+                        <img src="https://via.placeholder.com/150" alt="صورة">
+                        <div class="thumbnail-actions">
+                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="thumbnail">
+                        <img src="https://via.placeholder.com/150" alt="صورة">
+                        <div class="thumbnail-actions">
+                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="thumbnail">
+                        <img src="https://via.placeholder.com/150" alt="صورة">
+                        <div class="thumbnail-actions">
+                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // تبويبات لوحة التحكم
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // إزالة النشاط من جميع التبويبات
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // إضافة النشاط للتبويب المحدد
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+        
+        // محاكاة رفع الملف
+        document.querySelector('.file-upload').addEventListener('click', function() {
+            this.querySelector('input[type="file"]').click();
+        });
+        
+        // محاكاة حذف الصور
+        document.querySelectorAll('.thumbnail-actions .btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if(confirm('هل أنت متأكد من حذف هذه الصورة؟')) {
+                    this.closest('.thumbnail').remove();
+                }
+            });
+        });
+        
+        // محاكاة حذف الرسائل
+        document.querySelectorAll('.btn-danger').forEach(btn => {
+            if(btn.textContent.includes('حذف')) {
+                btn.addEventListener('click', function() {
+                    if(confirm('هل أنت متأكد من حذف هذه الرسالة؟')) {
+                        this.closest('tr').remove();
+                    }
+                });
+            }
+        });
+
+        // تسجيل الخروج
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            if(confirm('هل تريد تسجيل الخروج؟')) {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>
