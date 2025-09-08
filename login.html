@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - Createur Web Site</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #0a1930;
+            --dark-yellow: #ffc107;
+            --light-blue: #1e3a5f;
+            --light-yellow: #ffd54f;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --success: #28a745;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: var(--dark-blue);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--light-blue) 100%);
+        }
+        
+        .login-container {
+            width: 90%;
+            max-width: 400px;
+        }
+        
+        .login-form {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .login-form h2 {
+            text-align: center;
+            color: var(--dark-blue);
+            margin-bottom: 20px;
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-logo h1 {
+            color: var(--dark-blue);
+            font-size: 28px;
+        }
+        
+        .login-logo span {
+            color: var(--dark-yellow);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--dark-blue);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--light-blue);
+        }
+        
+        .back-to-home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--dark-blue);
+            text-decoration: none;
+        }
+        
+        .back-to-home:hover {
+            text-decoration: underline;
+        }
+        
+        /* إشعارات */
+        .alert {
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: none;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-form">
+            <div class="login-logo">
+                <h1>Createur <span>Web Site</span></h1>
+                <p>لوحة تحكم الموقع</p>
+            </div>
+            
+            <div id="loginAlert" class="alert"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">اسم المستخدم</label>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">كلمة المرور</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">تسجيل الدخول</button>
+            </form>
+            
+            <a href="index.html" class="back-to-home">العودة إلى الصفحة الرئيسية</a>
+        </div>
+    </div>
+
+    <script>
+        // دالة لعرض التنبيهات
+        function showAlert(message, type) {
+            const alert = document.getElementById('loginAlert');
+            alert.textContent = message;
+            alert.classList.add(type === 'success' ? 'alert-success' : 'alert-error');
+            alert.style.display = 'block';
+            
+            // إخفاء التنبيه بعد 5 ثوان
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        // تسجيل الدخول
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // تحقق بسيط من بيانات الدخول
+            if (username === 'admin' && password === 'admin123') {
+                showAlert('تم تسجيل الدخول بنجاح! يتم التوجيه إلى لوحة التحكم...', 'success');
+                
+                // توجيه إلى لوحة التحكم بعد تسجيل الدخول بنجاح
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+            } else {
+                showAlert('اسم المستخدم أو كلمة المرور غير صحيحة', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
