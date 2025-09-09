@@ -396,6 +396,16 @@
             left: 5px;
         }
         
+        /* معاينة الصورة */
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+            display: none;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
         /* responsive design */
         @media (max-width: 768px) {
             .sidebar {
@@ -506,10 +516,12 @@
                 
                 <div class="tab-content active" id="images">
                     <div class="form-group">
-                        <label>رابط الصورة (URL)</label>
-                        <input type="text" class="form-control" id="imageUrl" placeholder="أدخل رابط الصورة من الإنترنت">
-                        <small>يمكنك استخدام خدمات مثل imgur.com لرفع الصور والحصول على رابط</small>
+                        <label>رفع صورة من جهازك</label>
+                        <input type="file" class="form-control" id="imageUpload" accept="image/*">
+                        <small>يمكنك رفع الصور مباشرة من جهازك</small>
                     </div>
+                    
+                    <img id="imagePreview" class="image-preview" alt="معاينة الصورة">
                     
                     <div class="form-group">
                         <label>عنوان الصورة</label>
@@ -538,14 +550,22 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>رابط صورة الإعلان (URL)</label>
-                        <input type="text" class="form-control" id="adImage" placeholder="أدخل رابط صورة الإعلان">
-                        <small>يمكنك استخدام خدمات مثل imgur.com لرفع الصور والحصول على رابط</small>
+                        <label>رفع صورة للإعلان (اختياري)</label>
+                        <input type="file" class="form-control" id="adImageUpload" accept="image/*">
                     </div>
                     
                     <div class="form-actions">
                         <button class="btn btn-primary" id="addAdBtn">نشر الإعلان</button>
                     </div>
+                </div>
+            </div>
+            
+            <!-- معرض الصور -->
+            <div class="content-box">
+                <h3>معرض الصور</h3>
+                
+                <div class="thumbnails" id="imagesGallery">
+                    <!-- سيتم ملء هذا القسم بالصور من localStorage -->
                 </div>
             </div>
             
@@ -576,11 +596,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadStats();
             loadMessages();
+            loadImages();
             
             // إضافة event listeners
             document.getElementById('addImageBtn').addEventListener('click', addImage);
             document.getElementById('addAdBtn').addEventListener('click', addAd);
             document.getElementById('logoutBtn').addEventListener('click', logout);
+            document.getElementById('imageUpload').addEventListener('change', handleImagePreview);
             
             // تبويبات
             document.querySelectorAll('.tab').forEach(tab => {
@@ -593,6 +615,20 @@
             });
         });
 
+        // معاينة الصورة قبل رفعها
+        function handleImagePreview(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('imagePreview');
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        }
+
         // تحميل الإحصائيات
         function loadStats() {
             const images = JSON.parse(localStorage.getItem('images')) || [];
@@ -602,6 +638,39 @@
             document.getElementById('imagesCount').textContent = images.length;
             document.getElementById('adsCount').textContent = ads.length;
             document.getElementById('messagesCount').textContent = messages.length;
+        }
+
+        // تحميل الصور وعرضها
+        function loadImages() {
+            const images = JSON.parse(localStorage.getItem('images')) || [];
+            const gallery = document.getElementById('imagesGallery');
+            
+            gallery.innerHTML = '';
+            
+            if (images.length === 0) {
+                gallery.innerHTML = '<p>لا توجد صور حالياً</p>';
+                return;
+            }
+            
+            images.forEach((image, index) => {
+                const thumb = document.createElement('div');
+                thumb.className = 'thumbnail';
+                thumb.innerHTML = `
+                    <img src="${image.data}" alt="${image.title}">
+                    <div class="thumbnail-actions">
+                        <button class="btn btn-danger btn-sm delete-image" data-index="${index}"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                gallery.appendChild(thumb);
+            });
+            
+            // إضافة event listeners لأزرار الحذف
+            document.querySelectorAll('.delete-image').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    deleteImage(index);
+                });
+            });
         }
 
         // تحميل الرسائل
@@ -666,40 +735,62 @@
             }
         }
 
+        // حذف صورة
+        function deleteImage(index) {
+            if (confirm('هل أنت متأكد من حذف هذه الصورة؟')) {
+                const images = JSON.parse(localStorage.getItem('images')) || [];
+                images.splice(index, 1);
+                localStorage.setItem('images', JSON.stringify(images));
+                loadImages();
+                loadStats();
+            }
+        }
+
         // إضافة صورة
         function addImage() {
-            const url = document.getElementById('imageUrl').value;
+            const fileInput = document.getElementById('imageUpload');
             const title = document.getElementById('imageTitle').value;
             const desc = document.getElementById('imageDesc').value;
             
-            if (!url || !title) {
-                alert('الرجاء إدخال رابط الصورة والعنوان');
+            if (!fileInput.files[0]) {
+                alert('الرجاء اختيار صورة لرفعها');
                 return;
             }
             
-            const images = JSON.parse(localStorage.getItem('images')) || [];
-            images.push({
-                url: url,
-                title: title,
-                description: desc,
-                date: new Date().toLocaleString()
-            });
+            if (!title) {
+                alert('الرجاء إدخال عنوان للصورة');
+                return;
+            }
             
-            localStorage.setItem('images', JSON.stringify(images));
-            
-            alert('تم إضافة الصورة بنجاح!');
-            document.getElementById('imageUrl').value = '';
-            document.getElementById('imageTitle').value = '';
-            document.getElementById('imageDesc').value = '';
-            
-            loadStats();
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const images = JSON.parse(localStorage.getItem('images')) || [];
+                images.push({
+                    data: e.target.result,
+                    title: title,
+                    description: desc,
+                    date: new Date().toLocaleString()
+                });
+                
+                localStorage.setItem('images', JSON.stringify(images));
+                
+                alert('تم إضافة الصورة بنجاح!');
+                fileInput.value = '';
+                document.getElementById('imageTitle').value = '';
+                document.getElementById('imageDesc').value = '';
+                document.getElementById('imagePreview').style.display = 'none';
+                
+                loadImages();
+                loadStats();
+            };
+            reader.readAsDataURL(fileInput.files[0]);
         }
 
         // إضافة إعلان
         function addAd() {
             const title = document.getElementById('adTitle').value;
             const content = document.getElementById('adContent').value;
-            const image = document.getElementById('adImage').value;
+            const fileInput = document.getElementById('adImageUpload');
             
             if (!title || !content) {
                 alert('الرجاء إدخال عنوان ومحتوى الإعلان');
@@ -707,19 +798,39 @@
             }
             
             const ads = JSON.parse(localStorage.getItem('ads')) || [];
-            ads.push({
-                title: title,
-                content: content,
-                image: image || 'https://via.placeholder.com/300x150?text=إعلان',
-                date: new Date().toLocaleString()
-            });
             
-            localStorage.setItem('ads', JSON.stringify(ads));
-            
+            if (fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    ads.push({
+                        title: title,
+                        content: content,
+                        image: e.target.result,
+                        date: new Date().toLocaleString()
+                    });
+                    
+                    localStorage.setItem('ads', JSON.stringify(ads));
+                    finishAdUpload();
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                ads.push({
+                    title: title,
+                    content: content,
+                    image: 'https://via.placeholder.com/300x150?text=إعلان',
+                    date: new Date().toLocaleString()
+                });
+                
+                localStorage.setItem('ads', JSON.stringify(ads));
+                finishAdUpload();
+            }
+        }
+
+        function finishAdUpload() {
             alert('تم نشر الإعلان بنجاح!');
             document.getElementById('adTitle').value = '';
             document.getElementById('adContent').value = '';
-            document.getElementById('adImage').value = '';
+            document.getElementById('adImageUpload').value = '';
             
             loadStats();
         }
