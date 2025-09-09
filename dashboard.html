@@ -432,10 +432,9 @@
         
         <ul class="sidebar-menu">
             <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> <span>لوحة التحكم</span></a></li>
-            <li><a href="#"><i class="fas fa-image"></i> <span>إدارة الصور</span></a></li>
-            <li><a href="#"><i class="fas fa-ad"></i> <span>الإعلانات</span></a></li>
-            <li><a href="#"><i class="fas fa-envelope"></i> <span>الرسائل</span></a></li>
-            <li><a href="#"><i class="fas fa-cog"></i> <span>الإعدادات</span></a></li>
+            <li><a href="#" id="imagesTab"><i class="fas fa-image"></i> <span>إدارة الصور</span></a></li>
+            <li><a href="#" id="adsTab"><i class="fas fa-ad"></i> <span>الإعلانات</span></a></li>
+            <li><a href="#" id="messagesTab"><i class="fas fa-envelope"></i> <span>الرسائل</span></a></li>
             <li><a href="index.html"><i class="fas fa-home"></i> <span>الموقع الرئيسي</span></a></li>
             <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>تسجيل الخروج</span></a></li>
         </ul>
@@ -470,7 +469,7 @@
                         <i class="fas fa-image"></i>
                     </div>
                     <div class="stat-info">
-                        <h3>24</h3>
+                        <h3 id="imagesCount">0</h3>
                         <p>عدد الصور</p>
                     </div>
                 </div>
@@ -480,7 +479,7 @@
                         <i class="fas fa-ad"></i>
                     </div>
                     <div class="stat-info">
-                        <h3>8</h3>
+                        <h3 id="adsCount">0</h3>
                         <p>إعلان نشط</p>
                     </div>
                 </div>
@@ -490,7 +489,7 @@
                         <i class="fas fa-envelope"></i>
                     </div>
                     <div class="stat-info">
-                        <h3>15</h3>
+                        <h3 id="messagesCount">0</h3>
                         <p>رسالة جديدة</p>
                     </div>
                 </div>
@@ -506,50 +505,46 @@
                 </div>
                 
                 <div class="tab-content active" id="images">
-                    <div class="file-upload" id="imageUpload">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>انقر أو اسحب الصورة هنا للرفع</p>
-                        <input type="file" style="display: none;" id="imageInput">
+                    <div class="form-group">
+                        <label>رابط الصورة (URL)</label>
+                        <input type="text" class="form-control" id="imageUrl" placeholder="أدخل رابط الصورة من الإنترنت">
+                        <small>يمكنك استخدام خدمات مثل imgur.com لرفع الصور والحصول على رابط</small>
                     </div>
                     
                     <div class="form-group">
                         <label>عنوان الصورة</label>
-                        <input type="text" class="form-control" placeholder="أدخل عنوان الصورة">
+                        <input type="text" class="form-control" id="imageTitle" placeholder="أدخل عنوان الصورة">
                     </div>
                     
                     <div class="form-group">
                         <label>وصف الصورة</label>
-                        <textarea class="form-control" placeholder="أدخل وصف الصورة"></textarea>
+                        <textarea class="form-control" id="imageDesc" placeholder="أدخل وصف الصورة"></textarea>
                     </div>
                     
                     <div class="form-actions">
-                        <button class="btn btn-primary">رفع الصورة</button>
+                        <button class="btn btn-primary" id="addImageBtn">إضافة الصورة</button>
                     </div>
                 </div>
                 
                 <div class="tab-content" id="ads">
                     <div class="form-group">
                         <label>عنوان الإعلان</label>
-                        <input type="text" class="form-control" placeholder="أدخل عنوان الإعلان">
+                        <input type="text" class="form-control" id="adTitle" placeholder="أدخل عنوان الإعلان">
                     </div>
                     
                     <div class="form-group">
                         <label>محتوى الإعلان</label>
-                        <textarea class="form-control" placeholder="أدخل محتوى الإعلان"></textarea>
+                        <textarea class="form-control" id="adContent" placeholder="أدخل محتوى الإعلان"></textarea>
                     </div>
                     
                     <div class="form-group">
-                        <label>صورة الإعلان</label>
-                        <input type="file" class="form-control">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>تاريخ النشر</label>
-                        <input type="date" class="form-control">
+                        <label>رابط صورة الإعلان (URL)</label>
+                        <input type="text" class="form-control" id="adImage" placeholder="أدخل رابط صورة الإعلان">
+                        <small>يمكنك استخدام خدمات مثل imgur.com لرفع الصور والحصول على رابط</small>
                     </div>
                     
                     <div class="form-actions">
-                        <button class="btn btn-primary">نشر الإعلان</button>
+                        <button class="btn btn-primary" id="addAdBtn">نشر الإعلان</button>
                     </div>
                 </div>
             </div>
@@ -565,129 +560,176 @@
                             <th>البريد الإلكتروني</th>
                             <th>الموضوع</th>
                             <th>التاريخ</th>
-                            <th>الحالة</th>
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
                     <tbody id="messagesTable">
-                        <tr>
-                            <td>أحمد محمد</td>
-                            <td>ahmed@example.com</td>
-                            <td>استفسار عن خدمات تصميم المواقع</td>
-                            <td>2023-10-15</td>
-                            <td><span class="status unread">غير مقروء</span></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm">عرض</button>
-                                <button class="btn btn-danger btn-sm">حذف</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>شركة التقنية</td>
-                            <td>tech@example.com</td>
-                            <td>طلب تصميم متجر إلكتروني</td>
-                            <td>2023-10-14</td>
-                            <td><span class="status read">تم القراءة</span></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm">عرض</button>
-                                <button class="btn btn-danger btn-sm">حذف</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>سارة عبد الله</td>
-                            <td>sara@example.com</td>
-                            <td>استفسار عن الأسعار</td>
-                            <td>2023-10-13</td>
-                            <td><span class="status read">تم القراءة</span></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm">عرض</button>
-                                <button class="btn btn-danger btn-sm">حذف</button>
-                            </td>
-                        </tr>
+                        <!-- سيتم ملء هذا الجدول بالبيانات من localStorage -->
                     </tbody>
                 </table>
-            </div>
-            
-            <!-- معرض الصور -->
-            <div class="content-box">
-                <h3>معرض الصور</h3>
-                
-                <div class="thumbnails">
-                    <div class="thumbnail">
-                        <img src="https://via.placeholder.com/150" alt="صورة">
-                        <div class="thumbnail-actions">
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <div class="thumbnail">
-                        <img src="https://via.placeholder.com/150" alt="صورة">
-                        <div class="thumbnail-actions">
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <div class="thumbnail">
-                        <img src="https://via.placeholder.com/150" alt="صورة">
-                        <div class="thumbnail-actions">
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                    <div class="thumbnail">
-                        <img src="https://via.placeholder.com/150" alt="صورة">
-                        <div class="thumbnail-actions">
-                            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // تبويبات لوحة التحكم
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                // إزالة النشاط من جميع التبويبات
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
-                // إضافة النشاط للتبويب المحدد
-                tab.classList.add('active');
-                document.getElementById(tab.dataset.tab).classList.add('active');
-            });
-        });
-        
-        // محاكاة رفع الملف
-        document.querySelector('.file-upload').addEventListener('click', function() {
-            this.querySelector('input[type="file"]').click();
-        });
-        
-        // محاكاة حذف الصور
-        document.querySelectorAll('.thumbnail-actions .btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                if(confirm('هل أنت متأكد من حذف هذه الصورة؟')) {
-                    this.closest('.thumbnail').remove();
-                }
-            });
-        });
-        
-        // محاكاة حذف الرسائل
-        document.querySelectorAll('.btn-danger').forEach(btn => {
-            if(btn.textContent.includes('حذف')) {
-                btn.addEventListener('click', function() {
-                    if(confirm('هل أنت متأكد من حذف هذه الرسالة؟')) {
-                        this.closest('tr').remove();
-                    }
+        // تحميل البيانات عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            loadMessages();
+            
+            // إضافة event listeners
+            document.getElementById('addImageBtn').addEventListener('click', addImage);
+            document.getElementById('addAdBtn').addEventListener('click', addAd);
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            
+            // تبويبات
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab).classList.add('active');
                 });
-            }
+            });
         });
 
+        // تحميل الإحصائيات
+        function loadStats() {
+            const images = JSON.parse(localStorage.getItem('images')) || [];
+            const ads = JSON.parse(localStorage.getItem('ads')) || [];
+            const messages = JSON.parse(localStorage.getItem('messages')) || [];
+            
+            document.getElementById('imagesCount').textContent = images.length;
+            document.getElementById('adsCount').textContent = ads.length;
+            document.getElementById('messagesCount').textContent = messages.length;
+        }
+
+        // تحميل الرسائل
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('messages')) || [];
+            const messagesTable = document.getElementById('messagesTable');
+            
+            messagesTable.innerHTML = '';
+            
+            if (messages.length === 0) {
+                messagesTable.innerHTML = '<tr><td colspan="5" style="text-align: center;">لا توجد رسائل</td></tr>';
+                return;
+            }
+            
+            messages.forEach((message, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${message.name}</td>
+                    <td>${message.email}</td>
+                    <td>${message.message.substring(0, 50)}...</td>
+                    <td>${message.date}</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm view-message" data-index="${index}">عرض</button>
+                        <button class="btn btn-danger btn-sm delete-message" data-index="${index}">حذف</button>
+                    </td>
+                `;
+                messagesTable.appendChild(row);
+            });
+            
+            // إضافة event listeners للأزرار
+            document.querySelectorAll('.view-message').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    viewMessage(index);
+                });
+            });
+            
+            document.querySelectorAll('.delete-message').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = this.getAttribute('data-index');
+                    deleteMessage(index);
+                });
+            });
+        }
+
+        // عرض رسالة
+        function viewMessage(index) {
+            const messages = JSON.parse(localStorage.getItem('messages')) || [];
+            const message = messages[index];
+            
+            alert(`المرسل: ${message.name}\nالبريد الإلكتروني: ${message.email}\nالهاتف: ${message.phone || 'غير متوفر'}\nالرسالة: ${message.message}\nالتاريخ: ${message.date}`);
+        }
+
+        // حذف رسالة
+        function deleteMessage(index) {
+            if (confirm('هل أنت متأكد من حذف هذه الرسالة؟')) {
+                const messages = JSON.parse(localStorage.getItem('messages')) || [];
+                messages.splice(index, 1);
+                localStorage.setItem('messages', JSON.stringify(messages));
+                loadMessages();
+                loadStats();
+            }
+        }
+
+        // إضافة صورة
+        function addImage() {
+            const url = document.getElementById('imageUrl').value;
+            const title = document.getElementById('imageTitle').value;
+            const desc = document.getElementById('imageDesc').value;
+            
+            if (!url || !title) {
+                alert('الرجاء إدخال رابط الصورة والعنوان');
+                return;
+            }
+            
+            const images = JSON.parse(localStorage.getItem('images')) || [];
+            images.push({
+                url: url,
+                title: title,
+                description: desc,
+                date: new Date().toLocaleString()
+            });
+            
+            localStorage.setItem('images', JSON.stringify(images));
+            
+            alert('تم إضافة الصورة بنجاح!');
+            document.getElementById('imageUrl').value = '';
+            document.getElementById('imageTitle').value = '';
+            document.getElementById('imageDesc').value = '';
+            
+            loadStats();
+        }
+
+        // إضافة إعلان
+        function addAd() {
+            const title = document.getElementById('adTitle').value;
+            const content = document.getElementById('adContent').value;
+            const image = document.getElementById('adImage').value;
+            
+            if (!title || !content) {
+                alert('الرجاء إدخال عنوان ومحتوى الإعلان');
+                return;
+            }
+            
+            const ads = JSON.parse(localStorage.getItem('ads')) || [];
+            ads.push({
+                title: title,
+                content: content,
+                image: image || 'https://via.placeholder.com/300x150?text=إعلان',
+                date: new Date().toLocaleString()
+            });
+            
+            localStorage.setItem('ads', JSON.stringify(ads));
+            
+            alert('تم نشر الإعلان بنجاح!');
+            document.getElementById('adTitle').value = '';
+            document.getElementById('adContent').value = '';
+            document.getElementById('adImage').value = '';
+            
+            loadStats();
+        }
+
         // تسجيل الخروج
-        document.getElementById('logoutBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            if(confirm('هل تريد تسجيل الخروج؟')) {
+        function logout() {
+            if (confirm('هل تريد تسجيل الخروج؟')) {
                 window.location.href = 'login.html';
             }
-        });
+        }
     </script>
 </body>
 </html>
