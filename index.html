@@ -188,7 +188,17 @@
             color: var(--dark-blue);
             margin-bottom: 1rem;
         }
-        
+        <!-- قسم معرض الصور -->
+<section id="gallery" class="services">
+    <div class="container">
+        <div class="section-title">
+            <h2>معرض أعمالنا</h2>
+        </div>
+        <div class="ads-gallery" id="imagesContainer">
+            <!-- سيتم ملء هذا القسم بالصور من localStorage -->
+        </div>
+    </div>
+</section>
         /* قسم العملاء */
         .clients {
             padding: 4rem 0;
@@ -715,3 +725,35 @@
     </script>
 </body>
 </html>
+<script>
+    // تحميل الصور عند فتح الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        loadImages();
+    });
+
+    // دالة لتحميل الصور من localStorage
+    function loadImages() {
+        const imagesContainer = document.getElementById('imagesContainer');
+        const images = JSON.parse(localStorage.getItem('images')) || [];
+        
+        imagesContainer.innerHTML = '';
+        
+        if (images.length === 0) {
+            imagesContainer.innerHTML = '<p>لا توجد صور في المعرض حالياً</p>';
+            return;
+        }
+        
+        images.forEach(image => {
+            const imageElement = document.createElement('div');
+            imageElement.className = 'ad-item';
+            imageElement.innerHTML = `
+                <img src="${image.data}" alt="${image.title}">
+                <div class="ad-content">
+                    <h4>${image.title}</h4>
+                    <p>${image.description}</p>
+                </div>
+            `;
+            imagesContainer.appendChild(imageElement);
+        });
+    }
+</script>
