@@ -840,6 +840,95 @@
             if (confirm('هل تريد تسجيل الخروج؟')) {
                 window.location.href = 'login.html';
             }
+            // في قسم إدارة الصور - إضافة أزرار الحذف
+function loadImages() {
+    const gallery = document.getElementById('imagesGallery');
+    const images = JSON.parse(localStorage.getItem('images')) || [];
+    
+    gallery.innerHTML = '';
+    
+    if (images.length === 0) {
+        gallery.innerHTML = '<p>لا توجد صور حالياً</p>';
+        return;
+    }
+    
+    images.forEach((image, index) => {
+        const thumb = document.createElement('div');
+        thumb.className = 'thumbnail';
+        thumb.innerHTML = `
+            <img src="${image.data}" alt="${image.title}">
+            <div class="thumbnail-actions">
+                <button class="btn btn-danger btn-sm delete-image" data-index="${index}"><i class="fas fa-trash"></i></button>
+            </div>
+        `;
+        gallery.appendChild(thumb);
+    });
+    
+    // إضافة event listeners لأزرار الحذف
+    document.querySelectorAll('.delete-image').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            deleteImage(index);
+        });
+    });
+}
+
+// حذف صورة
+function deleteImage(index) {
+    if (confirm('هل أنت متأكد من حذف هذه الصورة؟')) {
+        const images = JSON.parse(localStorage.getItem('images')) || [];
+        images.splice(index, 1);
+        localStorage.setItem('images', JSON.stringify(images));
+        loadImages();
+        loadStats();
+    }
+}
+
+// في قسم الإعلانات - إضافة أزرار الحذف
+function loadAdsForDeletion() {
+    const adsContainer = document.getElementById('adsContainerForDeletion');
+    const ads = JSON.parse(localStorage.getItem('ads')) || [];
+    
+    adsContainer.innerHTML = '';
+    
+    if (ads.length === 0) {
+        adsContainer.innerHTML = '<p>لا توجد إعلانات حالياً</p>';
+        return;
+    }
+    
+    ads.forEach((ad, index) => {
+        const adElement = document.createElement('div');
+        adElement.className = 'ad-item';
+        adElement.innerHTML = `
+            <img src="${ad.image}" alt="${ad.title}">
+            <div class="ad-content">
+                <h4>${ad.title}</h4>
+                <p>${ad.content}</p>
+                <button class="btn btn-danger btn-sm delete-ad" data-index="${index}">حذف الإعلان</button>
+            </div>
+        `;
+        adsContainer.appendChild(adElement);
+    });
+    
+    // إضافة event listeners لأزرار الحذف
+    document.querySelectorAll('.delete-ad').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const index = this.getAttribute('data-index');
+            deleteAd(index);
+        });
+    });
+}
+
+// حذف إعلان
+function deleteAd(index) {
+    if (confirm('هل أنت متأكد من حذف هذا الإعلان؟')) {
+        const ads = JSON.parse(localStorage.getItem('ads')) || [];
+        ads.splice(index, 1);
+        localStorage.setItem('ads', JSON.stringify(ads));
+        loadAdsForDeletion();
+        loadStats();
+    }
+}
         }
     </script>
 </body>
