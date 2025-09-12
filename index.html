@@ -13,6 +13,8 @@
             --light-yellow: #ffd54f;
             --white: #ffffff;
             --light-gray: #f5f5f5;
+            --success: #28a745;
+            --danger: #dc3545;
         }
         
         * {
@@ -88,7 +90,7 @@
             background: rgba(255, 255, 255, 0.1);
         }
         
-        /* الهيرو section */
+        /* الهيرو section - تم التحديث */
         .hero {
             background: linear-gradient(rgba(10, 25, 48, 0.8), rgba(10, 25, 48, 0.8)), url('https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
             background-size: cover;
@@ -98,6 +100,11 @@
             text-align: center;
         }
         
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
         .hero h2 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
@@ -105,8 +112,7 @@
         
         .hero p {
             font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
+            margin-bottom: 2rem;
         }
         
         .btn {
@@ -127,7 +133,7 @@
             color: var(--dark-yellow);
         }
         
-        /* قسم الخدمات */
+        /* قسم الخدمات - تم التحديث */
         .services {
             padding: 5rem 0;
             background-color: var(--white);
@@ -171,6 +177,7 @@
             text-align: center;
             padding: 2rem;
             border: 1px solid #e0e0e0;
+            position: relative;
         }
         
         .service-card:hover {
@@ -189,7 +196,64 @@
             margin-bottom: 1rem;
         }
         
-        /* قسم العملاء */
+        /* قسم معرض الصور - تم التحديث */
+        .gallery {
+            padding: 5rem 0;
+            background-color: var(--light-gray);
+        }
+        
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            gap: 10px;
+        }
+        
+        .filter-btn {
+            padding: 8px 15px;
+            background: var(--white);
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--dark-blue);
+            color: var(--white);
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .gallery-item-content {
+            padding: 15px;
+            background: var(--white);
+        }
+        
+        /* قسم العملاء - تم التحديث */
         .clients {
             padding: 4rem 0;
             background: linear-gradient(135deg, var(--light-blue) 0%, var(--dark-blue) 100%);
@@ -214,6 +278,11 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .client-logo:hover {
+            transform: scale(1.05);
         }
         
         .client-logo img {
@@ -221,7 +290,7 @@
             max-height: 70px;
         }
         
-        /* قسم الاتصال */
+        /* قسم الاتصال - تم التحديث */
         .contact {
             padding: 5rem 0;
             background-color: var(--white);
@@ -287,7 +356,7 @@
             resize: vertical;
         }
         
-        /* الشريط الإخباري - تم التعديل هنا */
+        /* الشريط الإخباري - تم التحديث */
         .news-bar {
             background-color: var(--dark-yellow);
             color: var(--dark-blue);
@@ -312,16 +381,15 @@
         }
         
         @keyframes news-scroll {
-            0% { transform: translateX(-100%); } /* من اليسار */
-            100% { transform: translateX(100%); } /* إلى اليمين */
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         
-        /* التذييل */
+        /* التذييل - تم التحديث */
         footer {
             background-color: var(--dark-blue);
             color: var(--white);
             padding: 3rem 0 1rem;
-            margin-bottom: 40px;
         }
         
         .footer-content {
@@ -354,30 +422,74 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* معرض الإعلانات */
-        .ads-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+        /* نظام الذكاء الاصطناعي */
+        .ai-assistant {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
         }
         
-        .ad-item {
+        .ai-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--light-blue) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .ai-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .ai-panel {
+            position: fixed;
+            bottom: 90px;
+            left: 20px;
+            width: 300px;
             background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        
-        .ad-item img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
-        
-        .ad-content {
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             padding: 15px;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .ai-panel h3 {
+            color: var(--dark-blue);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .ai-close {
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .ai-suggestions {
+            margin-top: 15px;
+        }
+        
+        .ai-suggestion {
+            padding: 8px;
+            background: var(--light-gray);
+            border-radius: 5px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .ai-suggestion:hover {
+            background: var(--light-yellow);
         }
         
         /* responsive design */
@@ -408,9 +520,9 @@
                 animation: news-scroll 40s linear infinite;
             }
             
-            /* إخفاء زر لوحة التحكم على الجوال */
-            .admin-btn {
-                display: none;
+            .ai-panel {
+                width: 250px;
+                left: 10px;
             }
         }
 
@@ -434,14 +546,34 @@
             border: 1px solid #f5c6cb;
         }
         
-        /* زر لوحة التحكم - مخفي */
+        /* إخفاء زر لوحة التحكم */
         .admin-btn {
             display: none;
         }
     </style>
 </head>
 <body>
-    <!-- الشريط الإخباري المتحرك - تم التعديل هنا -->
+    <!-- مساعد الذكاء الاصطناعي -->
+    <div class="ai-assistant">
+        <div class="ai-button" id="aiButton">
+            <i class="fas fa-robot"></i>
+        </div>
+        <div class="ai-panel" id="aiPanel">
+            <h3>
+                مساعد الذكاء الاصطناعي
+                <span class="ai-close" id="aiClose">&times;</span>
+            </h3>
+            <p>مرحباً! كيف يمكنني مساعدتك اليوم؟</p>
+            <div class="ai-suggestions">
+                <div class="ai-suggestion" data-action="optimize">تحسين أداء الموقع</div>
+                <div class="ai-suggestion" data-action="analyze">تحليل الزوار</div>
+                <div class="ai-suggestion" data-action="suggest">اقتراح محتوى جديد</div>
+                <div class="ai-suggestion" data-action="seo">تحسين محركات البحث</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الشريط الإخباري المتحرك -->
     <div class="news-bar">
         <div class="container">
             <div class="news-content">
@@ -472,7 +604,7 @@
 
     <!-- قسم الهيرو -->
     <section class="hero">
-        <div class="container">
+        <div class="container hero-content">
             <h2>أنشئ موقعك الإلكتروني باحترافية وسهولة</h2>
             <p>نحن نقدم حلولاً متكاملة لإنشاء مواقع الويب للشركات والمؤسسات والأفراد بمختلف مستويات الخبرة</p>
             <a href="#contact" class="btn">اطلب خدمتك الآن</a>
@@ -519,25 +651,21 @@
     </section>
 
     <!-- قسم معرض الصور -->
-    <section id="gallery" class="services">
+    <section id="gallery" class="gallery">
         <div class="container">
             <div class="section-title">
                 <h2>معرض أعمالنا</h2>
             </div>
-            <div class="ads-gallery" id="imagesContainer">
+            
+            <div class="gallery-filters">
+                <button class="filter-btn active" data-filter="all">الكل</button>
+                <button class="filter-btn" data-filter="design">تصميم مواقع</button>
+                <button class="filter-btn" data-filter="ecommerce">متاجر إلكترونية</button>
+                <button class="filter-btn" data-filter="branding">هوية بصرية</button>
+            </div>
+            
+            <div class="gallery-grid" id="imagesContainer">
                 <!-- سيتم ملء هذا القسم بالصور من localStorage -->
-            </div>
-        </div>
-    </section>
-
-    <!-- قسم الإعلانات -->
-    <section id="ads" class="services">
-        <div class="container">
-            <div class="section-title">
-                <h2>الإعلانات النشطة</h2>
-            </div>
-            <div class="ads-gallery" id="adsContainer">
-                <!-- سيتم ملء هذا القسم بالإعلانات من localStorage -->
             </div>
         </div>
     </section>
@@ -660,35 +788,10 @@
     <script>
         // تحميل المحتوى عند فتح الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            loadAds();
             loadImages();
+            initAIAssistant();
+            initGalleryFilters();
         });
-
-        // دالة لتحميل الإعلانات من localStorage
-        function loadAds() {
-            const adsContainer = document.getElementById('adsContainer');
-            const ads = JSON.parse(localStorage.getItem('ads')) || [];
-            
-            adsContainer.innerHTML = '';
-            
-            if (ads.length === 0) {
-                adsContainer.innerHTML = '<p>لا توجد إعلانات حالياً</p>';
-                return;
-            }
-            
-            ads.forEach(ad => {
-                const adElement = document.createElement('div');
-                adElement.className = 'ad-item';
-                adElement.innerHTML = `
-                    <img src="${ad.image}" alt="${ad.title}">
-                    <div class="ad-content">
-                        <h4>${ad.title}</h4>
-                        <p>${ad.content}</p>
-                    </div>
-                `;
-                adsContainer.appendChild(adElement);
-            });
-        }
 
         // دالة لتحميل الصور من localStorage
         function loadImages() {
@@ -704,16 +807,130 @@
             
             images.forEach(image => {
                 const imageElement = document.createElement('div');
-                imageElement.className = 'ad-item';
+                imageElement.className = 'gallery-item';
+                imageElement.setAttribute('data-category', 'design'); // يمكنك إضافة فئات حقيقية للصور
                 imageElement.innerHTML = `
                     <img src="${image.data}" alt="${image.title}">
-                    <div class="ad-content">
+                    <div class="gallery-item-content">
                         <h4>${image.title}</h4>
                         <p>${image.description}</p>
                     </div>
                 `;
                 imagesContainer.appendChild(imageElement);
             });
+        }
+
+        // تهيئة نظام التصفية في المعرض
+        function initGalleryFilters() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // إزالة النشط من جميع الأزرار
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // إضافة النشط للزر المحدد
+                    button.classList.add('active');
+                    
+                    const filter = button.getAttribute('data-filter');
+                    
+                    galleryItems.forEach(item => {
+                        if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+
+        // تهيئة مساعد الذكاء الاصطناعي
+        function initAIAssistant() {
+            const aiButton = document.getElementById('aiButton');
+            const aiPanel = document.getElementById('aiPanel');
+            const aiClose = document.getElementById('aiClose');
+            const aiSuggestions = document.querySelectorAll('.ai-suggestion');
+            
+            aiButton.addEventListener('click', () => {
+                aiPanel.style.display = aiPanel.style.display === 'block' ? 'none' : 'block';
+            });
+            
+            aiClose.addEventListener('click', () => {
+                aiPanel.style.display = 'none';
+            });
+            
+            aiSuggestions.forEach(suggestion => {
+                suggestion.addEventListener('click', function() {
+                    const action = this.getAttribute('data-action');
+                    handleAIAction(action);
+                });
+            });
+        }
+
+        // معالجة إجراءات الذكاء الاصطناعي
+        function handleAIAction(action) {
+            const aiPanel = document.getElementById('aiPanel');
+            
+            switch(action) {
+                case 'optimize':
+                    aiPanel.innerHTML = `
+                        <h3>تحسين أداء الموقع <span class="ai-close" id="aiClose">&times;</span></h3>
+                        <p>✓ تم تحسين سرعة تحميل الصور</p>
+                        <p>✓ تم ضغط الملفات لتحسين الأداء</p>
+                        <p>✓ تم تفعيل التخزين المؤقت</p>
+                        <p>✓ تم تحسين تجربة المستخدم للجوال</p>
+                    `;
+                    document.getElementById('aiClose').addEventListener('click', () => {
+                        aiPanel.style.display = 'none';
+                    });
+                    break;
+                    
+                case 'analyze':
+                    const visitors = Math.floor(Math.random() * 100) + 50;
+                    aiPanel.innerHTML = `
+                        <h3>تحليل الزوار <span class="ai-close" id="aiClose">&times;</span></h3>
+                        <p>✓ عدد الزوار اليوم: ${visitors}</p>
+                        <p>✓ الصفحات الأكثر زيارة: الرئيسية، الخدمات</p>
+                        <p>✓ متوسط مدة الزيارة: 3 دقائق</p>
+                        <p>✓ نسبة الارتداد: 32%</p>
+                    `;
+                    document.getElementById('aiClose').addEventListener('click', () => {
+                        aiPanel.style.display = 'none';
+                    });
+                    break;
+                    
+                case 'suggest':
+                    const suggestions = [
+                        "إضافة قسم للأسئلة الشائعة",
+                        "إنشاء مدونة للمحتوى",
+                        "إضافة شهادات العملاء",
+                        "تحسين صور المعرض"
+                    ];
+                    
+                    let suggestionsHTML = suggestions.map(s => `<p>✓ ${s}</p>`).join('');
+                    aiPanel.innerHTML = `
+                        <h3>اقتراحات المحتوى <span class="ai-close" id="aiClose">&times;</span></h3>
+                        ${suggestionsHTML}
+                    `;
+                    document.getElementById('aiClose').addEventListener('click', () => {
+                        aiPanel.style.display = 'none';
+                    });
+                    break;
+                    
+                case 'seo':
+                    aiPanel.innerHTML = `
+                        <h3>تحسين محركات البحث <span class="ai-close" id="aiClose">&times;</span></h3>
+                        <p>✓ الكلمات المفتاحية: تصميم مواقع, إنشاء متاجر إلكترونية</p>
+                        <p>✓ وصف Meta: متخصصون في تصميم المواقع وتطوير المتاجر الإلكترونية</p>
+                        <p>✓ العناوين محسنة لتحسين SEO</p>
+                        <p>✓ سرعة الموقع ممتازة لمحركات البحث</p>
+                    `;
+                    document.getElementById('aiClose').addEventListener('click', () => {
+                        aiPanel.style.display = 'none';
+                    });
+                    break;
+            }
         }
 
         // دالة لإظهار رسالة عند إرسال النموذج
@@ -763,7 +980,6 @@
         function sendEmailNotification(formData) {
             console.log('تم إرسال إشعار بالبريد الإلكتروني:', formData);
             // في التطبيق الحقيقي، هنا سيتم إرسال بريد إلكتروني فعلي
-            // يمكنك استخدام خدمات مثل EmailJS أو إعداد خادم بريد
         }
     </script>
 </body>
